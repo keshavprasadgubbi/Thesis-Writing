@@ -1,0 +1,272 @@
+%% !TEX root = mythesis.tex
+%
+\chapter{Simulation Setup}\label{Ch3}
+
+This chapter is an cursory overview of the tools employed for undertaking the simulation study in this thesis. The  array of software tools utilized is described in Section \ref{SoftwareTools} with brief overview of FeynRules in Section \ref{FeynRulesPackage}, UFO Models in Section \ref{UFOModels} and Rivet in Section \ref{Rivet}. The Event generator called MadGraph5 is detailed in Section \ref{MadG5}. Lastly, the sensitivity study carried out on various aQGC operators is described in Section \ref{SensitivityStudy}. 
+\section{Software Tools}\label{SoftwareTools}
+
+\subsection{\texttt{{\Large F}EYN{\Large R}ULES}}\label{FeynRulesPackage}
+
+The \texttt{{\Large F}EYN{\Large R}ULES} package \cite{FeynRules2.0}, \cite{FeynRules-Talk} associated with Mathematica \cite{Mathematica}, is the first step in transforming a given physics theory/model into a format that is comprehensible for computers as well. These models, expressed in myriad formats, can be utilized for developing simulations and analyzing the data acquired for a given model for phenomenological studies and experimental analyses. 
+
+All the particle physics theories are Quantum Field Theories (QFT) (briefly described in Section \ref{QFT}), which are expressed in Lagrangian formalism. These Lagrangians are composed of fields (scalar/fermion/boson) and derivatives of fields, vertices, couplings and parameters along with respective Feynman rules regarding the particular process of interest. Every process involves possibly multiple Feynman diagrams and consequently Feynman amplitudes. The book by Thomson \cite{Thomson} can be referred to for an explanation and procedure to arrive at the respective Feynman rules. The landscape of Beyond Standard Model (BSM) physics, involves multitude of theoretical models and their implementation into MC event generators remains a demanding and consuming affair. %Every BSM model has its unique Feynman rules which must be extracted and applied incrementally one step at the time into various codes, which have their own specific formats and conventions that need to be respected.
+
+The  \texttt{{\Large F}EYN{\Large R}ULES} package is a tool in this regard, which helps in converting particle theories into the \texttt{UFO} format output. This package enables to obtain Feynman rules in momentum space associated with the Lagrangian for any QFT physics models. The implementation of a general model that is input by the user, requires the model to respect the properties of lorentz invariance, gauge invariance and locality. The utility and flexibility of  \texttt{{\Large F}EYN{\Large R}ULES} has dramatically increased from the time of its introduction, with many additional features being incorporated recently \cite{NewFeynRules} that includes: addition of two-component fermions, spin-$\frac{3}{2}$ and spin-2 fields, inclusion of superspace notation, SUSY calculations and also a new interface for Universal FeynRules (UFO) formats.
+
+Upon implementation of these models by  \texttt{{\Large F}EYN{\Large R}ULES} package, the output obtained from it in terms of \texttt{UFO} format is fed as input to MC event generators like \texttt{MadGraph5}  \cite{MG5}, \texttt{Sherpa} \cite{Gleisberg:2008ta} and \texttt{Whizard} \cite{Reuter:2014ema} among the many event generators available for High Energy Physics (HEP) community today. Therefore, the  \texttt{{\Large F}EYN{\Large R}ULES} package is an important cog in the wheel of moving from theoretical models to developing simulations and finally validation of experimental data with increasingly high levels of precision.
+
+\subsection{\texttt{UFO} Models}\label{UFOModels}
+
+The Universal \texttt{{\Large F}EYN{\Large R}ULES} Output (\texttt{UFO}) \cite{Degrande-UFO} is the output obtained in a general purpose format after implementing a given physics model though the \texttt{{\Large F}EYN{\Large R}ULES} package, as explained above. A major advantage in utilizing this format is that, it does not make any \textit{apriori} assumptions nor restricts the different structures that could be included in a given model. Therefore, this flexible format enables to encode all relevant information about the model in an abstract form and can be easily accessed by other tools.
+
+A set of objects in the Python \cite{Python} programming language, stores the information regarding particles, parameters and the respective vertices of the given model. The properties of above listed physics structures is associated with a list of attributes. The representation of the model information in this manner has significant benefits over other conventional text table-based format. This can be illustrated from the fact that new representation enables the user to include any additional information directly as a new attribute in the respective object. 
+
+Currently, the UFO format is being used by the \texttt{MadGraph5} \cite{MG5} and \texttt{Herwig++} \cite{Bellm:2015jjp}. The UFO Models, for the current study of aQGC operators (with particle containers that include all five flavors of quarks except the top quark), is obtained as an open source resource from Reference \cite{aQGC}. 
+
+\subsection{\texttt{Rivet}}\label{Rivet}
+The Robust Independent Validation of Experiment and Theory or \texttt{Rivet} is a platform provided by \cite{RivetHomePage}, \cite{Buckley:2010ar} to validate the output from various Monte Carlo (MC) event generators. The advantage of \texttt{Rivet} over other competing tools, is best expressed through the quote from \cite{Buckley:2010ar}: ``\texttt{Rivet} is a C++ class library, which provides the infrastructure and calculational tools for particle-level analyses for high energy collider experiments, enabling physicists to validate event generator models and tunings with minimal effort and maximum portability''. The feature of \texttt{Rivet} being "generator-agnostic" \cite{Rivet-Tutorial} makes it an attractive tool for theorists, phenomenologists and experimentalists for building their analysis with \texttt{Rivet}.  Its widespread usage can also be attributed to the fact that \texttt{Rivet} preserves the analysis code for various collider experiments across the world.
+
+Depending on requirements of the analysis tasks, a script (defined as \texttt{Rivet} routine henceforth) for analyzing the events is developed by utilizing the numerous classes, particle-containers and other computational infrastructure provided by \texttt{Rivet}. The events (generated as output from event generators) is input into rivet routine, for undertaking analysis of events. The rivet routine includes various stages of analyzing events like object definition, event selection, reconstruction of objects from decayed final states and also producing histograms of all relevant observables. 
+
+In this study, the events for analysis was generated through the \texttt{MadGraph5} (described in the following section) generator and the \texttt{Rivet} routine that was developed for analyzing these events is provided in Appendix \ref{Scripts}. The procedure involved in development of the \texttt{Rivet} routine and the details regarding the analysis of events will be described in greater detail Chapter \ref{Chapter4}. %It is pertinent to note that, despite \texttt{Rivet} being a platform for validating results from multiple MC generators, only \texttt{MadGraph5} is utilized to generate events for this phenomenological study. 
+
+
+
+\section{\texttt{MadGraph}}\label{MadG5}
+The objective behind collider-based experiments, like the Tevatron \cite{Tevatron} or Large Hadron Collider (LHC) \cite{LHC}, is to gain a deeper understanding of the fundamental building blocks of matter and their interactions. These experiments are built to verify the claims and predictions of SM and also to probe the existence of phenomena beyond SM physics. The probe for new physics in these experiments and the interpretation of their results, rely extensively on our capabilities to perform simulations for both the signals and their backgrounds to increasingly higher orders of precision. The simulation of physics processes is carried out by generating ``events''  through event generators like \texttt{MadGraph5}. These events encapsulate all relevant physical phenomena related to the given process of interest. A set of events are referred to as ``event-samples/samples''. 
+
+
+\texttt{MadGraph5} \cite{MG5} is the upgraded avatar from its earlier version of \texttt{MadGraph} generator \cite{Maltoni-MG} and has been built using the Python programming language. A step-by-step tutorial explaining the simulation of events is available from the twiki in Reference \cite{MG5-Tutorial}. The script for simulating events for this study is available in Appendix \ref{Scripts}. 
+
+A number of attractive features to enhance the capabilities of \texttt{MadGraph} has been incorporated recently. These include a novel and efficient algorithm for improved performance and a new user-friendly interface for the user. It also provides the option of obtaining output in several formats along with full compatibility with \texttt{{\Large F}EYN{\Large R}ULES}. This feature of \texttt{MadGraph5} potentially ensures the implementation of entire landscape of physics models, as long as the model is written in the form of a Lagrangian. 
+
+The input parameters for generating events for given process is included through inbuilt tools of \texttt{MadGraph} called \texttt{run\_card} and \texttt{parameter\_card}. All model independent parameters are included in the \texttt{run\_card}. 
+These include the different parameters of the incoming beam like energy, type, pdf, polarization and also includes the cuts to be imposed at the parton level itself. The external parameter of the model is included in the \texttt{parameter\_card}. 
+
+
+\section{Sensitivity Study of aQGC}\label{SensitivityStudy}
+
+The triple gauge couplings as predicted by the SM were described in Section \ref{Theory-QGC}. First evidence for the production of three massive vector bosons from a single pp collision is observed with a significance of 4.0 standard deviations  \cite{Cristinziani:2649213}, \cite{Sciandra:2314648}. Triboson production studies provides a handle to probe the non-abelian gauge structure of SM. The possible deviations in comparison with the SM predictions would provide hints of new physics at higher energy scales. In certain models with higher dimensional EFT operators (like eight dimensional aQGC operators in the current study), these couplings can be modified, leading to a significant enhancement of \textit{WWZ} production cross sections. These modified couplings are referred to as anomalous couplings, for a process involving four gauge bosons. The evidence for the production of three massive vector bosons is the motivation behind undertaking a sensitivity study on aQGC operators. 
+
+The sensitivity study involves compiling the most constrained limits from various analyses for all aQGC operators that contribute to \textit{WWZ} production. These operators are then probed for deviations in cross-sections with respect to the SM cross section ($\sigma_\text{SM}$).
+
+
+\subsection{Generation of events}\label{EventGeneration}
+The JobOption (JO) for the generation of events, along with the respective \texttt{run\_card} and \texttt{parameter\_card} for a given EFT operator is provided as an example in Reference \cite{aQGC-GitProject}. It is also ensured in the JO to obtain the output as a root file. 10000 events per sample are generated on the grid. An example of the respective JO employed for generation of event samples is given in Reference \cite{aQGC-GitProject}.
+
+The generation of event samples for respective operators is simulated at Leading Order (LO) with \texttt{MadGraph5} v2.6.2 and involves the following steps:
+
+\begin{enumerate}
+
+	\item \underline{Importing the \texttt{UFO} Model:} The \texttt{UFO} model (updated to five flavor scheme) contain the Lagrangian for SM along with the Lagrangian for the respective aQGC operator, which is available on \cite{aQGC}. This can be input into our JO via \texttt{import} command.  Also, the particle container is defined by including three flavors of leptons and five flavors of quarks (the sixth flavor of quark is not kinematically accessible). 
+
+	\item \underline{Generating Process:} The relevant process to be generated ($pp > W^{-}W^{+}Z$) is specified along with the highest order couplings. The QED coupling is a combination of both QED and EW couplings while first order coupling for New Physics (NP) is included.
+
+	\item \underline{Decay via \texttt{MadSpin}:} The \texttt{MadSpin} \cite{MadSpin} card is called for decaying the vector bosons using the spin correlations. The $W^{-}$ and $W^{+}$ bosons are allowed to decay into all possible combinations of final states while the Z boson decays into leptons with opposite charge. The leptons referred to at the generation stage include all the three flavors of leptons.
+
+	\item \underline{Showering:} The \texttt{Pythia v8.2.10} \cite{Pythia8} package is utilized for showering, underlying event simulation and hadronization and  \texttt{NNPDF30\_lo\_as\_0118} set (obtained from References  \cite{Buckley2015},\cite{PDFset-Webpage}) has been utilized for the provision of Parton Distribution Functions (PDFs) \cite{Placakyte:2011az}.
+
+	\item \underline{Coupling strength}: Then the events are generated by including the appropriate \texttt{run\_card} and also by providing value of the coupling strengths in the \texttt{parameter\_card} for the respective operator in the JO.
+
+	\item \underline{Filters}: Three lepton filters are included in order to obtain events which have exactly three charged leptons and other events are rejected. The filter efficiency was found to be 44.71$\%$ for the total number of events.
+\end{enumerate}
+After the production of \textit{WWZ} bosons, the three Lepton channel is adopted for decay of vector bosons as follows:
+\begin{itemize}
+	\item  Leptonic \textit{W} Boson: \textit{W}$\rightarrow$ $\ell\nu$      
+	\item  Leptonic \textit{Z} Boson: \textit{Z}$\rightarrow$$\ell^{+}\ell^{-}$ 
+	\item  Hadronic (\textit{W\_Had}) Boson: \textit{W}$\rightarrow$$ \text{q}\overline{\text{q}}$      
+\end{itemize}
+\subsection{Feynman Diagrams}
+The feynman diagrams produced by \texttt{MadGraph5} generator for the production of \textit{WWZ} are displayed in Figure \ref{feynmandiagrams}. It can be confirmed through the coupling of NP being equal to one (production of \textit{WWZ} at Leading Order), that the diagrams with a highlighted vertex are indicative of the additional diagrams produced due to the inclusion of aQGC operators. 
+
+\begin{figure}
+	\centering
+	\begin{subfigure}[b]{0.3\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{/Users/keshavaprasad/Desktop/ThesisWriting/ThesisImages/FeynmanDiagrams/1.png}
+		%\caption{$y=x$}
+		%\label{fig:y equals x}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[b]{0.3\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{/Users/keshavaprasad/Desktop/ThesisWriting/ThesisImages/FeynmanDiagrams/2.png}
+		%\caption{$y=3sinx$}
+		%\label{fig:three sin x}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[b]{0.3\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{/Users/keshavaprasad/Desktop/ThesisWriting/ThesisImages/FeynmanDiagrams/3.png}
+		%\caption{$y=5/x$}
+		%\label{fig:five over x}
+	\end{subfigure}
+\begin{subfigure}[b]{0.3\textwidth}
+	\centering
+	\includegraphics[width=\textwidth]{/Users/keshavaprasad/Desktop/ThesisWriting/ThesisImages/FeynmanDiagrams/3.png}
+	%\caption{$y=5/x$}
+	%\label{fig:five over x}
+\end{subfigure}
+\begin{subfigure}[b]{0.3\textwidth}
+	\centering
+	\includegraphics[width=\textwidth]{/Users/keshavaprasad/Desktop/ThesisWriting/ThesisImages/FeynmanDiagrams/4.png}
+	%\caption{$y=5/x$}
+%	\label{fig:five over x}
+\end{subfigure}
+\begin{subfigure}[b]{0.3\textwidth}
+	\centering
+	\includegraphics[width=\textwidth]{/Users/keshavaprasad/Desktop/ThesisWriting/ThesisImages/FeynmanDiagrams/5.png}
+	%\caption{$y=5/x$}
+	%\label{fig:five over x}
+\end{subfigure}
+\begin{subfigure}[b]{0.3\textwidth}
+	\centering
+	\includegraphics[width=\textwidth]{/Users/keshavaprasad/Desktop/ThesisWriting/ThesisImages/FeynmanDiagrams/6.png}
+	%\caption{$y=5/x$}7
+	%\label{fig:five over x}
+\end{subfigure}
+\begin{subfigure}[b]{0.3\textwidth}
+	\centering
+	\includegraphics[width=\textwidth]{/Users/keshavaprasad/Desktop/ThesisWriting/ThesisImages/FeynmanDiagrams/7.png}
+	%\caption{$y=5/x$}
+	%\label{fig:five over x}
+\end{subfigure}
+\begin{subfigure}[b]{0.3\textwidth}
+	\centering
+	\includegraphics[width=\textwidth]{/Users/keshavaprasad/Desktop/ThesisWriting/ThesisImages/FeynmanDiagrams/8.png}
+	%\caption{$y=5/x$}
+	%\label{fig:five over x}
+\end{subfigure}
+\begin{subfigure}[b]{0.3\textwidth}
+	\centering
+	\includegraphics[width=\textwidth]{/Users/keshavaprasad/Desktop/ThesisWriting/ThesisImages/FeynmanDiagrams/9.png}
+	%\caption{$y=5/x$}
+	%\label{fig:five over x}
+\end{subfigure}
+\begin{subfigure}[b]{0.3\textwidth}
+	\centering
+	\includegraphics[width=\textwidth]{/Users/keshavaprasad/Desktop/ThesisWriting/ThesisImages/FeynmanDiagrams/10.png}
+	%\caption{$y=5/x$}
+	%\label{fig:five over x}
+\end{subfigure}
+\begin{subfigure}[b]{0.3\textwidth}
+	\centering
+	\includegraphics[width=\textwidth]{/Users/keshavaprasad/Desktop/ThesisWriting/ThesisImages/FeynmanDiagrams/11.png}
+	%\caption{$y=5/x$}
+	%\label{fig:five over x}
+\end{subfigure}
+	\caption{Feynman Diagrams for production of WWZ  after inclusion of aQGC operators with respective highest order couplings as produced by \texttt{MadGraph5}}
+	\label{feynmandiagrams}
+\end{figure}
+
+\subsection{Deviations from SM}\label{DeviationsTable}
+The operators that contribute to the production of \textit{WWZ} are enlisted and defined in Section \ref{aQGC Operators}. 
+The coupling strength of the operators, when set to zero, would result in the effective Lagrangian reduce into SM Lagrangian (in the perturbative expansion of EFT Lagrangian in Equation \ref{eft1})  and thereby would provide the value of $\sigma_\text{SM}$ at tree level which was found to be 89 fb. 
+
+The best constrained limits for various TGC and QGC couplings from both ATLAS and CMS analysis are available in Reference \cite{Limitsonanomaloustripleandquarticgaugecouplings} and quoted in Tables \ref{table1}, \ref{table2} and \ref{table3}. The negative values of the limit, when provided as input in \texttt{parameter\_card}, will not affect the cross section, since the matrix element is squared in expression for differential cross sections ($\frac{d\sigma}{d\Omega}$) for a given process. For the cross sections enlisted in the tables below, coupling strength is obtained by calculating the average of best limits and then included in the \texttt{parameter\_card}. After generating the respective aQGC sample, the value of $\sigma_\text{aQGC}$ is tabulated. The variation in cross section in comparison to SM is obtained by $\Delta\sigma$ by taking the difference between $\sigma_\text{aQGC}$ and $\sigma_\text{SM}$. The deviation is then calculated as the ratio of ($\Delta\sigma$/$\sigma_\text{SM}$).
+
+%##########################################################################################
+
+%Table for tensor ops
+%\begin{center}
+\begin{table}
+	\centering
+
+	\begin{tabular}{|c|c|c|c|}
+		\hline
+		Operator & Limits ($\text{ TeV}^{-4}$)& $\sigma_\text{aQGC}$(fb)  & Deviation= ($\Delta\sigma$/$\sigma_\text{SM}$)*100 (\% )\\
+		\hline \hline
+		T0 & [-0.46 - 0.44]& 90.39 &  1.56 \\
+		\hline
+		T1 & [-0.61 - 0.61]&90.16 & 1.3   \\
+		\hline
+		T2 & [-1.2 - 1.2]& 90.5  & 1.66   \\
+		\hline
+		T5 & [-3.8 - 3.8]& 96.31 & 8.21    \\
+		\hline
+		T6 & [-2.8 - 3.0]& 89.58 &  0.65 \\
+		\hline
+		T7 & [-7.3 - 7.7]& 89.58 & 0.65    \\
+		\hline
+		%\caption{The best limits for tensor operators was obtained from ~\cite{Sirunyan:2017fvv}}
+	\end{tabular}
+
+	%\end{tabular}
+	\caption{The best limits for tensor operators was obtained from ~\cite{TensorOpRef}.}
+	\label{table1}
+\end{table}
+%\end{center}
+
+%$\sigma_{SM}$ = 89fb ;\\
+%$Tev^{-4} = 10^{-12}*Gev^{-4}$\\
+
+%Table for Mixed Operators
+%\begin{center}
+\begin{table}
+	\centering
+	\begin{tabular}{|c|c|c|c|}
+		\hline
+		Operator & Limits ($\text{TeV}^{-4}$)& $\sigma_{aQGC}$(fb)& Deviation= ($\Delta\sigma$/$\sigma_\text{SM}$)*100 (\%) \\
+		\hline \hline
+		M0 & [-4.2 - 4.2] & 91.3 & 2.58\\
+		\hline
+		M1 & [-16 - 16] & 99.02 & 11.25\\
+		\hline
+		M2 & [-26 - 26] & 135.8 & 52.58 \\
+		\hline
+		M3 & [-43 - 44] & 131.5 & 47.5\\
+		\hline
+		M4 & [-40 - 40] & 180.31 & 100.2\\
+		\hline
+		M5 & [-65 - 65] & 189.4 & 112.8 \\
+		\hline
+		M7 & [-13 - 13] &91.94 & 3.3\\
+		\hline
+		%\caption{The best limits for Mixed operators was obtained from ~\cite{CMS-PAS-SMP-14-011}, ~\cite{Khachatryan:2016mud}, ~\cite{Chatrchyan:2014bza} and ~\cite{Khachatryan:2014sta}}
+	\end{tabular}
+	\caption{The best limits for Mixed operators was obtained from ~\cite{MixedRef1}, \cite{PhysRevD.90.032008}, ~\cite{PhysRevLett.114.051801} and ~\cite{Khachatryan:2016mud}. \label{table2}}
+	\label{MixedOpsTable}
+\end{table}
+
+%\end{center}
+
+% Table for Scalar Operators
+%\begin{center}
+\begin{table}
+	\centering
+	\begin{tabular}{|c|c|c|c|}
+		\hline
+		Operator & Limits ($\text{TeV}^{-4}$)& $\sigma_\text{aQGC}$(fb)  & Deviation= ($\Delta\sigma$/$\sigma_\text{SM}$)*100 (\%) \\
+		\hline \hline
+		S0 & [-118.75 - 150]& 89.85 &  0.95\\
+		\hline
+		S1 & [-181.75 - 231.25]& 91.69 &  3.02\\
+		\hline
+		%\caption{The best limits for Mixed operators was obtained from }
+	\end{tabular}
+	\caption{The best limits for Scalar operators was obtained from ~\cite{ScalarOpRef}\label{table3}. }
+\end{table}
+
+From the values of best limits, the tensor and scalar operators is tightly constrained while there still remains further scope for constraining of mixed operators. From the deviations in cross-sections that were observed after the generation of events, it can be seen that the mixed operators have the highest deviations while the tensor and scalar operators do not deviate from $\sigma_\text{SM}$ significantly. Therefore, samples of mixed operators are chosen for performing analysis through the custom built rivet routine which will be described in the next Chapter.
+
+
+%\item a conference note~\cite{ATLAS-CONF-2011-008};
+%\item a preprint~\cite{atlas:perf:2009} (you can also use
+%  \texttt{@online} or \texttt{@booklet} for such things);
+%\item something that is only available online~\cite{thesis-guide}.
+%\end{itemize}
+%
+%At the end of the introduction it is normal to say briefly what comes
+%in the following chapters.
+%
+%The line at the beginning of this file is used by TeXstudio etc.\ to
+%specify which is the master \LaTeX{} file, so that you can compile your thesis
+%directly from this file.
+%The lines at the end of this file are used by AUCTeX
+%directly within \texttt{emacs} to do the same thing.
+%If your thesis is called something other than \texttt{mythesis}, adjust them as appropriate.
+%
+%%%% Local Variables:
+%%%% mode: latex
+%%%% TeX-master: "mythesis"
+%%%% End:
